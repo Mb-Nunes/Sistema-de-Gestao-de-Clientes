@@ -25,7 +25,7 @@ def telefone_existe(ws, telefone):
 
 def pedir_nome(ws):
     while True:
-        nome = input("Digite o nome do cliente: ").title()
+        nome = input("Digite o nome do cliente: ").lower()
 
         if nome.lower() == "cancelar":
             return None
@@ -119,8 +119,8 @@ def listar_clientes(ws):
     if not clientes:
         print("Nenhum cliente cadastrado.")
     else:
-        for nome, contato, telefone in clientes:
-            print(f"{nome} / {contato} / {telefone}")
+        for nome, email, telefone in clientes:
+            print(f"{nome} / {email} / {telefone}")
 
     linha()
 
@@ -128,13 +128,13 @@ def buscar_cliente(ws):
     linha()
     print("BUSCAR CLIENTES\n")
 
-    busca = input("Digite um nome que deseja pesquisar: ")
+    busca = input("Digite um nome que deseja pesquisar: ").lower()
 
     encontrou = False
 
-    for nome, contato, telefone in list(ws.values)[1:]:
+    for nome, email, telefone in list(ws.values)[1:]:
         if busca.lower() in nome.lower():
-            print(f"{nome} / {contato} / {telefone}")
+            print(f"{nome} / {email} / {telefone}")
             encontrou = True
 
     if not encontrou:
@@ -154,28 +154,82 @@ def deletar_cliente(ws, wb, arquivo):
 
     clientes = list(ws.values)[1:]
 
-    for nome, contato, telefone in clientes:
-        print(f"{nome} / {contato} / {telefone}")
+    for nome, email, telefone in clientes:
+        print(f"{nome} / {email} / {telefone}")
 
     while True:
         nome_delete = input("\nDigite o nome que deseja deletar: ").lower()
 
-        if nome_delete == "cancelar":
+        if nome_delete.lower() == "Cancelar":
             return
 
         encontrou = False
 
-        for i, (nome, contato, telefone) in enumerate(clientes, start=2):
+        for i, (nome, email, telefone) in enumerate(clientes, start=2):
             if nome_delete == nome.lower():
                 ws.delete_rows(i)
+                wb.save(arquivo)
                 print(f"{nome} removido com sucesso!")
                 linha()
+                return
+        
+        print("Nome não encontrado. Tente novamente.")
+
+def validar_resposta(pergunta):
+    while True:
+        resposta = input(pergunta).lower()
+
+        if resposta in ["s", "n"]:
+            return resposta
+
+        print("Resposta inválida.")
+
+def editar_cliente(ws, wb, arquivo):
+    linha()
+    print("LISTA DE CLIENTES\n")
+    clientes = list(ws.values)[1:]
+    for nome, email, telefone in clientes:
+        print(f"{nome} / {email} / {telefone}")
+    linha()
+
+    while True:
+        cliente_para_editar = input("Informe o nome do cliente que deseja editar: ").lower()
+
+        if cliente_para_editar.lower() == "cancelar":
+            return
+        
+        encontrou = False
+        
+        for i, (nome, email, telefone) in enumerate(clientes, start=2):
+            if cliente_para_editar == nome:
+                print("Cliente encontrado!\n")
+                print(f"Nome: {nome}")
+                print(f"Email: {email}")
+                print(f"Telefone: {telefone}\n")
+                
+                alterar_nome = validar_resposta("Deseja alterar o nome? (s/n)")
+                if alterar_nome == "s":
+                    encontrou = True
+
+                    novo_nome = input("Digite o novo nome: ")
+                    ws.cell(row=i, column=1).value = novo_nome
+
+                alterar_email = validar_resposta("Deseja alterar o email? (s/n)")
+                if alterar_email == "s":
+                    novo_email = input("Digite o novo email: ")
+                    ws.cell(row=i, column=2).value = novo_email
+                
+                alterar_telefone = validar_resposta("Deseja alterar o telefone? (s/n)")
+                if alterar_telefone == "s":
+                    novo_telefone = input("Digite o novo telefone: ")
+                    ws.cell(row=i, column=3).value = novo_telefone
+                    
                 wb.save(arquivo)
-                encontrou = True
+                print("Cliente atualizado com sucesso!")
+                linha()
                 break
-
+        
         if not encontrou:
-            print("Nome não encontrado.")
+            print("Cliente não encontrado.")
             linha()
-
-        break
+            continue
