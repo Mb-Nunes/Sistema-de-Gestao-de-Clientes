@@ -1,7 +1,7 @@
 from openpyxl import Workbook, load_workbook
 import os
 
-from clientes import cadastrar_clientes, listar_clientes, buscar_cliente, fechar, deletar_cliente, linha, pausar
+from clientes import cadastrar_clientes, listar_clientes, buscar_cliente, fechar, deletar_cliente, linha, pausar, editar_cliente
 
 arquivo = "data/tabelaclientes.xlsx"
 
@@ -20,11 +20,12 @@ while True:
 1 - Cadastrar clientes.
 2 - Lista de clientes.
 3 - Buscar clientes.
-4 - Sair.
-5 - Deletar cliente.
+4 - Deletar cliente.
+5 - Editar cliente.
+6 - Sair.
 Escolha uma das opções: """
         )
-        if opcao in ['1', '2', '3', '4', '5']:
+        if opcao in ['1', '2', '3', '4', '5', '6']:
             break
         print("OPÇÃO INVÁLIDA.")
         linha()
@@ -47,9 +48,13 @@ Escolha uma das opções: """
 
     # FINALIZAR
     elif opcao == '4':
-        fechar(wb, arquivo)
-        break
-
-    elif opcao == '5':
         deletar_cliente(ws, wb, arquivo)
         pausar()
+
+    elif opcao == '5':
+        editar_cliente(ws, wb, arquivo)
+        pausar()
+
+    elif opcao == '6':
+        fechar(wb, arquivo)
+        break
