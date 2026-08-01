@@ -98,7 +98,7 @@ Contém toda a lógica do sistema:
 
 ```txt
 MENU
-1 - Cadastrar clientes ✅
+1 - Cadastrar clientes
 2 - Listar clientes
 3 - Buscar cliente
 4 - Sair
@@ -151,7 +151,7 @@ Este projeto foi desenvolvido com foco no aprendizado de:
 
 # 🔮 Melhorias futuras
 
-- ✏️ Edição de clientes
+- ✏️ Edição de clientes ✅
 - 🔒 Validação avançada de e-mails
 - 📊 Exportação de relatórios
 - 🔎 Busca avançada
