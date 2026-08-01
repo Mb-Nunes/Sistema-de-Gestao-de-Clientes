@@ -98,7 +98,7 @@ Contém toda a lógica do sistema:
 
 ```txt
 MENU
-1 - Cadastrar clientes
+1 - Cadastrar clientes ✅
 2 - Listar clientes
 3 - Buscar cliente
 4 - Sair
